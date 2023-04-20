@@ -1,0 +1,166 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+        <section id="form-geral">
+            <form id="account" method="post">
+                <h4 class="text-center">Log in</h4>
+                <hr />
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Email" class="form-control shadow-none" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                    <label asp-for="Input.Email" class="form-label">Email</label>
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Password" class="form-control shadow-none" autocomplete="current-password" aria-required="true" placeholder="password" />
+                    <label asp-for="Input.Password" class="form-label">Password</label>
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+                <div class="checkbox mb-3">
+                    <label asp-for="Input.RememberMe" class="form-label">
+                        <input class="form-check-input shadow-none" asp-for="Input.RememberMe" />
+                        @Html.DisplayNameFor(m => m.Input.RememberMe)
+                    </label>
+                    <p>
+                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+                    </p>
+                </div>
+                <div>
+                    <button id="login-submit" type="submit" class="w-100 btn btn-lg button-login shadow-none">Log in</button>
+                </div>
+            </form>
+            @{
+                if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                {
+                    <div>
+                        <p>
+                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">
+                                article
+                                about setting up this ASP.NET application to support logging in via external services
+                            </a>.
+                        </p>
+                    </div>
+                }
+                else
+                {
+                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                        <div id="container-google">
+                            <h4 class="text-center title-google">Log in with Google</h4>
+                            <hr />
+                            <p>Use your Google Account to access the app.</p>
+                            <p>
+                                @foreach (var provider in Model.ExternalLogins!)
+                                {
+                                    <button type="submit" id="button-google" class="btn w-100 my-2" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+                                        <img class="image-google" src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png"/>
+                                    Sign in with @provider.DisplayName
+                                    </button>
+                                }
+                            </p>
+                            <div class="space-only">
+                            </div>
+                        </div>
+                    </form>
+                }
+            }
+        </section>
+    </div>
+</div>
+
+<style>
+    #form-geral {
+      
+    display: flex;
+    margin-top: 5rem;
+    height: 60vh;
+    padding: 3%;
+    border-radius: 7px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    flex-directio n: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    }
+
+    #account {
+        margin-right: 3%;
+        width: 50%;
+        padding: 0 2rem;
+    }
+
+    p {
+        margin-top: 0;
+        margin-bottom: 1rem;
+        font-size: 14px;
+    }
+
+    #forgot-password{
+        color: #ff7a00;
+    }
+
+    #external-account {
+        border-left: 1px solid #8080802e;
+        padding: 4rem 0;
+        width: 50%;
+        height: 100%;
+    }
+
+    #container-google {
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+        padding: 19% 13%;
+        margin: 0;
+        margin-left: 7%;
+    }
+
+    .button-login {
+        background-image: linear-gradient(45deg, #e50000a8, #ff8b27);
+        text-align: center;
+        margin: auto;
+    }
+
+    .image-google{
+        margin-right: 2%;
+        width: 15px;
+    }
+
+    .title-google {
+    }
+
+    #button-google {
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    display: flex;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 3% 11% 3% 0%;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: space-evenly;
+    align-items: center;
+    }
+
+    .form-check-input:hover,
+    .form-check-input:active,
+    .form-check-input:focus,
+    .form-control:hover, 
+    .form-control:active, 
+    .form-control:focus, 
+    #login-submit:hover, 
+    #login-submit:active, 
+    #login-submit:focus {
+        outline: none !important;
+        border: 1px solid #ff7a00;
+    }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

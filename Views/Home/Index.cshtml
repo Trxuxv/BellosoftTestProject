@@ -1,0 +1,147 @@
+﻿@page
+
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <div class="text-center home-container" style="border-radius: 10px;background-image: url('https://i.pinimg.com/originals/ad/c4/79/adc4797cfc697f7563d8690b0631c9e9.gif');
+    background-size: inherit;">
+        <div style="
+    display: flex;
+    border-radius: 100%;
+    background: #ff0000bf;
+    width: 52%;
+    height: 97%;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;">
+            <input hidden id="name_user" value="@User.Identity?.Name" />
+            <div class="message-user">
+                <div id="message"></div>
+                <div id="time"></div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="text-center home-container">
+        <div class="title-container">
+            <h2 class="font-800 display-4 text-left">Welcome to Bellosoft Test Project</h2>
+            <h5 class="my-4"> Google Authentication register and login.</h5>
+            <p class="my-2">Made by <i>Débora Maciel</i></p>
+        </div>
+        <div class="ilustrate-container">
+        </div>
+    </div>
+}
+
+<style>
+    .home-container {
+        width: 100%;
+        height: 70vh;
+        display: flex;
+        place-items: center;
+        margin-top: 4rem;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .title-container {
+        width: 35%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        height: 100%;
+    }
+
+    .ilustrate-container {
+        width: 50%;
+        height: 100%;
+        background-image: url('https://enouvo.com/wp-content/uploads/2022/07/User-flow-amico-1024x1024.png');
+        background-size: cover;
+    }
+
+    .hello-container {
+        width: 50%;
+        height: 100%;
+        background-size: cover;
+    }
+
+    .text-left {
+        text-align: left;
+    }
+
+    .font-800 {
+        font-weight: 800;
+    }
+
+    .my-2 {
+        margin: 2rem 0;
+    }
+
+    .message-user {
+        color: white;
+        font-weight: 800;
+        height: 60%;
+        font-size: 35px;
+        text-align: center;
+    }
+
+</style>
+
+<script>
+    var name_user = document.getElementById("name_user");
+    var message = document.getElementById("message");
+    var time = document.getElementById("time");
+
+    Validate();
+
+    function Validate() {
+        var sessions = JSON.parse(localStorage.getItem("session_user"));
+
+        if (sessions == null) {
+            var newArr = [];
+
+            var data = {
+                user: name_user.value,
+                dataLast: new Date
+            };
+
+            newArr.push(data);
+
+            localStorage.setItem("session_user", JSON.stringify(newArr));
+            message.innerHTML = "Welcome, its your first acess " + name_user.value;
+        }
+        else {
+            var datas = sessions;
+
+            var data = datas.find(x => x.user == name_user.value);
+
+            console.log("usuario: ", data)
+
+            if (data) {
+                var hours = new Date(data.dataLast).toString().match(/\d{2}:\d{2}/g);
+                message.innerHTML = "<h2 style='font-size: 43px;font-weight: 900;'>Hello again</h2> <br/>" + data.user + "! <hr/> <br/> Your first access date: <br/>" + data.dataLast.replace(/(\d{4})\-(\d{2})\-(\d{2}).*/, '$3/$2/$1');
+                time.innerHTML = "At " + hours[0]
+            } else {
+                var newData = {
+                    user: name_user.value,
+                    dataLast: new Date
+                };
+
+                localStorage.setItem("session_user", JSON.stringify([...sessions, newData]));
+                message.innerHTML = "Welcome, its your first acess " + name_user.value;
+            }
+
+        }
+    }
+</script>

@@ -1,0 +1,32 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@{
+    ViewBag.Title = "User";
+}
+
+<div class="text-center user-container">
+    <div class="data-container">
+        <h5 class="font-800 display-4">User</h5>
+        <div >
+            <span>
+                User email: @User.Identity?.Name
+            </span>
+        </div>
+    </div>
+</div>
+<style>
+    .user-container {
+        width: 60%;
+        height: 70vh;
+        display: flex;
+        margin: auto;
+        margin-top: 2rem;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
