@@ -28,8 +28,8 @@ namespace TestWebProject
             services.AddAuthentication()
                 .AddGoogle(googleOptions =>
                 {
-                    googleOptions.ClientId = "426204009050-6ltobtjbjrkgt712u7bs462nm26g23an.apps.googleusercontent.com";
-                    googleOptions.ClientSecret = "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";
+                    googleOptions.ClientId = "";
+                    googleOptions.ClientSecret = "";
                 });
 
             services.AddControllersWithViews();
